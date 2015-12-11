@@ -31,7 +31,7 @@ module.exports = {
 					this.$el.find('*').each(function(index, el) {
 
 						// skip if already initialized by lower component
-						if(el.attributes.getNamedItem('__view') && el.attributes.getNamedItem('__view').value) {
+						if(el.attributes.getNamedItem('__owner-view') && el.attributes.getNamedItem('__view').value) {
 							return;
 						}
 
@@ -51,8 +51,8 @@ module.exports = {
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
 							try {
-								comp.render();
-								comp.$el.attr('__view', _this.cid);
+								el.setAttribute('__owner-view', _this.cid);
+								if(comp.render) comp.render();
 							} catch(err) {
 								logger.error('Error rendering', el, err, err.stack);
 							}
