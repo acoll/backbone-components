@@ -1,0 +1,8 @@
+{
+  "name": "backbone-components",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "loginator": "acoll/loginator"
+  }
+}
