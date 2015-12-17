@@ -31,7 +31,7 @@ module.exports = {
 					this.$el.find('*').each(function(index, el) {
 
 						// skip if already initialized by lower component
-						if(el.attributes.getNamedItem('__owner-view') && el.attributes.getNamedItem('__view').value) {
+						if(el.attributes.getNamedItem('__owner-view') && el.attributes.getNamedItem('__owner-view').value) {
 							return;
 						}
 
