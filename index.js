@@ -2,6 +2,8 @@ var logger = require('loginator')('backbone-components');
 
 var components = {};
 
+var initialized = false;
+
 module.exports = {
 	components: components,
 	register: function (name, Component) {
@@ -16,6 +18,13 @@ module.exports = {
 		logger.info('`' + name + '` registered');
 	},
 	init: function (Backbone) {
+
+		if(initialized) {
+			logger.warn('You are trying to initialize backbone-components again.');
+			return;
+		}
+
+		initialized = true;
 
 		logger.info('Initializing with Backbone instance:', Backbone);
 
