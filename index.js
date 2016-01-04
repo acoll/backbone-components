@@ -28,11 +28,11 @@ module.exports = {
 
 		logger.info('Initializing with Backbone instance:', Backbone);
 
-		Backbone.__origView = Backbone.View;
+		Backbone.originalViewRef = Backbone.View;
 		Backbone.View = Backbone.View.extend({
 			constructor: function () {
 				// logger.debug('Applying custom component logic to View', this);
-				Backbone.__origView.apply(this, arguments);
+				Backbone.originalViewRef.apply(this, arguments);
 
 				this.on('render', function () {
 					var model = this.model;
