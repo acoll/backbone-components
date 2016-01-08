@@ -47,7 +47,7 @@ module.exports = {
 						var componentClass = components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-							var opts = {el: el};
+							var opts = {el: el, _parentModel: model.toJSON()};
 
 							for(var i = 0; i < el.attributes.length; i++) {
 								var attrib = el.attributes[i];
@@ -56,7 +56,7 @@ module.exports = {
 							 	else 
 							 		opts[attrib.name] = attrib.value;
 							}
-
+							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
 							try {
