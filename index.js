@@ -4,6 +4,20 @@ var components = {};
 
 var initialized = false;
 
+function getOptions(el, model, view, opts){
+	if(!opts){
+		opts = [];
+	}
+	for(var i = 0; i < el.attributes.length; i++) {
+		var attrib = el.attributes[i];
+		if(attrib.value.indexOf('$') === 0) 
+			opts[attrib.name] = getValue(model, attrib.value, el, view);
+		else 
+			opts[attrib.name] = attrib.value;
+	}
+	return opts;
+}
+
 module.exports = {
 	components: components,
 	register: function (name, Component) {
@@ -48,14 +62,11 @@ module.exports = {
 
 						if(componentClass) {
 							var opts = {el: el, _parentModel: model.toJSON()};
-
-							for(var i = 0; i < el.attributes.length; i++) {
-								var attrib = el.attributes[i];
-								if(attrib.value.indexOf('$') === 0) 
-									opts[attrib.name] = getValue(model, attrib.value, el, _this);
-							 	else 
-							 		opts[attrib.name] = attrib.value;
-							}
+							
+							opts.getOptions = function(el){
+								return getOptions(el, model, _this);
+							};
+ 							getOptions(el, model, this, opts);
 							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
