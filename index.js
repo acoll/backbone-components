@@ -6,12 +6,13 @@ var initialized = false;
 
 function getOptions(el, model, view, opts){
 	if(!opts){
-		opts = [];
+		opts = {};
 	}
+	var data = model ? model.toJSON() : {};
 	for(var i = 0; i < el.attributes.length; i++) {
 		var attrib = el.attributes[i];
 		if(attrib.value.indexOf('$') === 0) 
-			opts[attrib.name] = getValue(model, attrib.value, el, view);
+			opts[attrib.name] = getValue(data, attrib.value, el, view);
 		else 
 			opts[attrib.name] = attrib.value;
 	}
@@ -61,7 +62,7 @@ module.exports = {
 						var componentClass = components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-							var opts = {el: el, _parentModel: model.toJSON()};
+							var opts = {el: el, _parentModel: model};
 							
 							opts.getOptions = function(el){
 								return getOptions(el, model, _this);
@@ -88,9 +89,9 @@ module.exports = {
 	}
 };
 
-function getValue(model, expr, el, view) {
-	var data = {};
-	if(model && model.toJSON) data = model.toJSON();
+function getValue(data, expr, el, view) {
+	//var data = {};
+	//if(model && model.toJSON) data = model.toJSON();
 
 
 	var parsedExpr = expr.substring(2, expr.length - 1);
