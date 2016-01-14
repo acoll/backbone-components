@@ -48,7 +48,6 @@ module.exports = {
 			constructor: function () {
 				// logger.debug('Applying custom component logic to View', this);
 				Backbone.originalViewRef.apply(this, arguments);
-
 				this.on('render', function () {
 					var model = this.model;
 					var _this = this;
@@ -71,6 +70,10 @@ module.exports = {
 							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
+							if(!_this.views){
+								_this.views = [];
+							}
+							_this.views.push(comp);
 							try {
 								el.setAttribute('__owner-view', _this.cid);
 								if(comp.render) comp.render();
@@ -83,6 +86,14 @@ module.exports = {
 						}
 
 					});
+				});
+				this.on('attach', function () {
+					if(this.views){
+						for(var i in this.views){
+							var comp = this.views[i];
+							if(comp.triggerMethod) comp.triggerMethod('attach');
+						}
+					}
 				});
 			}
 		});
