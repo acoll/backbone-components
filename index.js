@@ -19,7 +19,7 @@ module.exports = {
 	},
 	init: function (Backbone) {
 
-		if(initialized) {
+		if(Backbone.__componentsInit) {
 			logger.warn('You are trying to initialize backbone-components again.');
 			return;
 		}
