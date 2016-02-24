@@ -61,7 +61,7 @@ module.exports = {
 						var componentClass = components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-							var opts = {el: el, _parentModel: model};
+							var opts = {el: el, _parentModel: model, _parentView: _this};
 							
 							opts.getOptions = function(el){
 								return getOptions(el, model, _this);
