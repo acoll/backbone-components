@@ -66,7 +66,7 @@ module.exports = {
 							opts.getOptions = function(el){
 								return getOptions(el, model, _this);
 							};
- 							getOptions(el, model, this, opts);
+ 							getOptions(el, model, _this, opts);
 							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
@@ -101,8 +101,7 @@ module.exports = {
 };
 
 function getValue(data, expr, el, view) {
-	//var data = {};
-	//if(model && model.toJSON) data = model.toJSON();
+	data._parent = view;
 
 
 	var parsedExpr = expr.substring(2, expr.length - 1);
