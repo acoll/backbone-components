@@ -58,7 +58,9 @@ module.exports = {
 							return;
 						}
 
-						var componentClass = components[el.tagName.toLowerCase()];
+						if(!_this.components) _this.components = {};
+
+						var componentClass = components[el.tagName.toLowerCase()] || _this.components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
 							var opts = {el: el, _parentModel: model, _parentView: _this};
