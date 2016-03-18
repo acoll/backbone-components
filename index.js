@@ -4,10 +4,16 @@ var components = {};
 
 var initialized = false;
 
-function getOptions(el, model, view, opts){
-	if(!opts){
-		opts = {};
-	}
+function getOptions(el, model, view){
+	var opts = {
+		el: el,
+		_parentModel: model,
+		_parentView: view,
+		getOptions: function(newEl){
+			return getOptions(newEl, model, view);
+		}
+	};
+
 	var data = model ? model.toJSON() : {};
 	for(var i = 0; i < el.attributes.length; i++) {
 		var attrib = el.attributes[i];
@@ -16,6 +22,7 @@ function getOptions(el, model, view, opts){
 		else 
 			opts[attrib.name] = attrib.value;
 	}
+
 	return opts;
 }
 
@@ -61,12 +68,9 @@ module.exports = {
 						var componentClass = components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-							var opts = {el: el, _parentModel: model, _parentView: _this};
 							
-							opts.getOptions = function(el){
-								return getOptions(el, model, _this);
-							};
- 							getOptions(el, model, this, opts);
+
+							var opts = getOptions(el, model, _this, opts);
 							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
