@@ -65,10 +65,11 @@ module.exports = {
 							return;
 						}
 
-						var componentClass = components[el.tagName.toLowerCase()];
+						if(!_this.components) _this.components = {};
+
+						var componentClass = components[el.tagName.toLowerCase()] || _this.components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-							
 
 							var opts = getOptions(el, model, _this, opts);
 							
@@ -105,8 +106,7 @@ module.exports = {
 };
 
 function getValue(data, expr, el, view) {
-	//var data = {};
-	//if(model && model.toJSON) data = model.toJSON();
+	data._parent = view;
 
 
 	var parsedExpr = expr.substring(2, expr.length - 1);
