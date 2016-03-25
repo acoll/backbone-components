@@ -73,7 +73,7 @@ module.exports = {
 
 							var opts = getOptions(el, model, _this, opts);
 							
-							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
+							// logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							var comp = new componentClass(opts);
 							if(!_this.views){
 								_this.views = [];
