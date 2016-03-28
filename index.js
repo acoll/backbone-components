@@ -70,11 +70,22 @@ module.exports = {
 						var componentClass = components[el.tagName.toLowerCase()] || _this.components[el.tagName.toLowerCase()];
 
 						if(componentClass) {
-
+							var rootModel = _this.rootModel;
+							if(!rootModel){
+								rootModel = model;
+							}
+							var rootView = _this.rootView;
+							if(!rootView){
+								rootView = this;
+							}
+							
+							
 							var opts = getOptions(el, model, _this, opts);
 							
 							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
+							componentClass = componentClass.extend({rootModel: rootModel, rootView: rootView, parentView: this, parentModel: model});
 							var comp = new componentClass(opts);
+							
 							if(!_this.views){
 								_this.views = [];
 							}
