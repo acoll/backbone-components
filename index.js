@@ -82,8 +82,10 @@ module.exports = {
 							
 							var opts = getOptions(el, model, _this, opts);
 							
-							logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
+
+							//logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 							componentClass = componentClass.extend({rootModel: rootModel, rootView: rootView, parentView: this, parentModel: model});
+
 							var comp = new componentClass(opts);
 							
 							if(!_this.views){
