@@ -4,20 +4,21 @@ var components = {};
 
 var initialized = false;
 
-function getOptions(el, model, view){
+function getOptions(el, model, rootModel, view){
 	var opts = {
 		el: el,
-		_parentModel: model,
-		_parentView: view,
 		getOptions: function(newEl){
-			return getOptions(newEl, model, view);
+			return getOptions(newEl, model, rootModel, view);
 		}
 	};
 
 	var data = model ? model.toJSON() : {};
+	var rootData = rootModel ? rootModel.toJSON() : {};
 	for(var i = 0; i < el.attributes.length; i++) {
 		var attrib = el.attributes[i];
-		if(attrib.value.indexOf('$') === 0) 
+		if(attrib.value.indexOf('$$') === 0)
+			opts[attrib.name] = getValue(rootData, attrib.value.substr(1,attrib.value.length - 1), el, view);
+		else if(attrib.value.indexOf('$') === 0) 
 			opts[attrib.name] = getValue(data, attrib.value, el, view);
 		else 
 			opts[attrib.name] = attrib.value;
@@ -76,17 +77,40 @@ module.exports = {
 							}
 							var rootView = _this.rootView;
 							if(!rootView){
-								rootView = this;
+								rootView = _this;
 							}
 							
 							
-							var opts = getOptions(el, model, _this, opts);
+							var opts = getOptions(el, model, rootModel,_this, opts);
+							//extend the component with anything on par
+							var originalComponentClass = componentClass;
+							componentClass = componentClass.extend(
+								{rootModel: rootModel, 
+								 rootView: rootView, 
+								 parentView: _this, 
+								 parentModel: model, 
+								 initialize: function(opts){
+									 //override intitialize so we can call parse component
+									 if(this.parseComponent){
+										 this.parseComponent(opts.el, opts);
+									 }
+									 //call the original inititalize prototype
+									 if(originalComponentClass.prototype){
+										 return originalComponentClass.prototype.initialize.call(this, opts);
+									 }
+									 
+								 }
+								});
+							
 							
 
 							//logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
-							componentClass = componentClass.extend({rootModel: rootModel, rootView: rootView, parentView: this, parentModel: model});
+							
 
 							var comp = new componentClass(opts);
+							if(comp.parseOptions){
+								comp.parseComponent();
+							}
 							
 							if(!_this.views){
 								_this.views = [];
