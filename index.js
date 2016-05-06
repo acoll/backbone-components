@@ -1,4 +1,5 @@
-var logger = require('loginator').logger('backbone-components');
+require('loginator');
+var logger = console.logger('backbone-components');
 
 var components = {};
 
