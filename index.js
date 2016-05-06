@@ -1,4 +1,4 @@
-var logger = require('loginator')('backbone-components');
+var logger = require('loginator').logger('backbone-components');
 
 var components = {};
 
@@ -18,9 +18,9 @@ function getOptions(el, model, rootModel, view){
 		var attrib = el.attributes[i];
 		if(attrib.value.indexOf('$$') === 0)
 			opts[attrib.name] = getValue(rootData, attrib.value.substr(1,attrib.value.length - 1), el, view);
-		else if(attrib.value.indexOf('$') === 0) 
+		else if(attrib.value.indexOf('$') === 0)
 			opts[attrib.name] = getValue(data, attrib.value, el, view);
-		else 
+		else
 			opts[attrib.name] = attrib.value;
 	}
 
@@ -79,16 +79,16 @@ module.exports = {
 							if(!rootView){
 								rootView = _this;
 							}
-							
-							
+
+
 							var opts = getOptions(el, model, rootModel,_this, opts);
 							//extend the component with anything on par
 							var originalComponentClass = componentClass;
 							componentClass = componentClass.extend(
-								{rootModel: rootModel, 
-								 rootView: rootView, 
-								 parentView: _this, 
-								 parentModel: model, 
+								{rootModel: rootModel,
+								 rootView: rootView,
+								 parentView: _this,
+								 parentModel: model,
 								 initialize: function(opts){
 									 //override intitialize so we can call parse component
 									 if(this.parseComponent){
@@ -98,20 +98,20 @@ module.exports = {
 									 if(originalComponentClass.prototype){
 										 return originalComponentClass.prototype.initialize.call(this, opts);
 									 }
-									 
+
 								 }
 								});
-							
-							
+
+
 
 							//logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
-							
+
 
 							var comp = new componentClass(opts);
 							if(comp.parseOptions){
 								comp.parseComponent();
 							}
-							
+
 							if(!_this.views){
 								_this.views = [];
 							}
