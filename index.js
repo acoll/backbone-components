@@ -145,7 +145,8 @@ module.exports = {
 
 function getValue(data, expr, el, view) {
 	data._parent = view;
-
+    data._model = view.model;
+    data._collection = view.collection;
 
 	var parsedExpr = expr.substring(2, expr.length - 1);
 
