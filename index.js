@@ -1,6 +1,3 @@
-require('loginator');
-var logger = console.logger('backbone-components');
-
 var components = {};
 
 var initialized = false;
@@ -36,26 +33,26 @@ module.exports = {
 		name = name + '-component';
 
 		if(components[name]) {
-			logger.warn('Skipping `' + name + '` It is already registered.');
+			console.warn('Skipping `' + name + '` It is already registered.');
 		}
 		components[name] = Component;
-		logger.info('`' + name + '` registered');
+		console.info('`' + name + '` registered');
 	},
 	init: function (Backbone) {
 
 		if(Backbone.__componentsInit) {
-			logger.warn('You are trying to initialize backbone-components again.');
+			console.warn('You are trying to initialize backbone-components again.');
 			return;
 		}
 
 		initialized = true;
 
-		logger.info('Initializing with Backbone instance:', Backbone);
+		console.info('Initializing with Backbone instance:', Backbone);
 
 		Backbone.originalViewRef = Backbone.View;
 		Backbone.View = Backbone.View.extend({
 			constructor: function () {
-				// logger.debug('Applying custom component logic to View', this);
+				// console.debug('Applying custom component logic to View', this);
 				Backbone.originalViewRef.apply(this, arguments);
 				this.on('render', function () {
 					var model = this.model;
@@ -105,7 +102,7 @@ module.exports = {
 
 
 
-							//logger.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
+							//console.info('Creating component:', el.tagName.toLowerCase(), 'with opts', opts, 'for view:', _this.cid);
 
 
 							var comp = new componentClass(opts);
@@ -121,11 +118,11 @@ module.exports = {
 								el.setAttribute('__owner-view', _this.cid);
 								if(comp.render) comp.render();
 							} catch(err) {
-								logger.error('Error rendering', el, err, err.stack);
+								console.error('Error rendering', el, err, err.stack);
 							}
 							if(comp.triggerMethod) comp.triggerMethod('show');
 						} else {
-							if(el.tagName.toLowerCase().indexOf('-component') > 0) logger.warn('No component registered for', el.tagName.toLowerCase());
+							if(el.tagName.toLowerCase().indexOf('-component') > 0) console.warn('No component registered for', el.tagName.toLowerCase());
 						}
 
 					});
@@ -161,8 +158,8 @@ function getValue(data, expr, el, view) {
 	try {
 		result = eval(fnExpr);
 	} catch(err) {
-		logger.error('Error evaluating:', expr, 'for el:', el, 'inside view:', view.cid, view.name);
-		logger.error(err);
+		console.error('Error evaluating:', expr, 'for el:', el, 'inside view:', view.cid, view.name);
+		console.error(err);
 
 	}
 
