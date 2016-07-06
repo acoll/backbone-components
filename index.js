@@ -36,7 +36,7 @@ module.exports = {
 			console.warn('Skipping `' + name + '` It is already registered.');
 		}
 		components[name] = Component;
-		console.info('`' + name + '` registered');
+		//console.info('`' + name + '` registered');
 	},
 	init: function (Backbone) {
 
