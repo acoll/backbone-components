@@ -12,6 +12,12 @@ function getOptions(el, model, rootModel, view){
 
 	var data = model ? model.toJSON() : {};
 	var rootData = rootModel ? rootModel.toJSON() : {};
+	
+	//include template helpers from marionette views
+	if(view && typeof view.mixinTemplateHelpers === 'function'){
+		view.mixinTemplateHelpers(data);
+		view.mixinTemplateHelpers(rootData);
+	}
 	for(var i = 0; i < el.attributes.length; i++) {
 		var attrib = el.attributes[i];
 		if(attrib.value.indexOf('$$') === 0)
