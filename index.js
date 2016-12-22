@@ -152,7 +152,7 @@ function getValue(data, expr, el, view) {
     data._collection = view.collection;
 
 	var parsedExpr = expr.substring(2, expr.length - 1);
-	var keys = Object.keys(data).filter(key => key.indexOf("-") < 0);
+	var keys = Object.keys(data).filter(function(key){ return key.indexOf("-") < 0});
 	var fnExpr = [
 		'(function (',
 		keys.join(','),
