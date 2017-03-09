@@ -24,8 +24,9 @@ function getOptions(el, model, rootModel, view){
 			opts[attrib.name] = getValue(rootData, attrib.value.substr(1,attrib.value.length - 1), el, view);
 		else if(attrib.value.indexOf('$') === 0)
 			opts[attrib.name] = getValue(data, attrib.value, el, view);
-		else
-			opts[attrib.name] = attrib.value;
+		else {
+			opts[attrib.name] = attrib.value === '' ? true : attrib.value
+		}
 	}
 
 	return opts;
